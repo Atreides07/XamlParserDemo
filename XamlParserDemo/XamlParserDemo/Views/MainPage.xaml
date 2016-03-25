@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XamlParserDemo.Views.MainPage">
+  <ScrollView>
+    <StackLayout>
+      <Label Text="XAML:"></Label>
+      <Editor x:Name="XamlEditer" HeightRequest="300"></Editor>
+      <Label Text="xml"></Label>
+      <Editor x:Name="XmlEditer" HeightRequest="300"></Editor>
+      <Button Text="Показать" HorizontalOptions="Center" Clicked="Button_OnClicked"></Button>
+    </StackLayout>
+  </ScrollView>
+</ContentPage>

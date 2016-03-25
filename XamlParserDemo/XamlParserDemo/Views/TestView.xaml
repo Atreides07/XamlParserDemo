@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XamlParserDemo.Views.TestView">
+  <ScrollView>
+    <StackLayout>
+      <Image Source="http://7oom.ru/wp-content/uploads/foto-priroda-9.jpg" WidthRequest="300" HeightRequest="200" Aspect="AspectFill" HorizontalOptions="Center" />
+      <Label Text="XAML:"></Label>
+      <Editor  HeightRequest="300"></Editor>
+      <Label Text="xml"></Label>
+      <Editor HeightRequest="300"></Editor>
+      <Button Text="Показать" HorizontalOptions="Center" ></Button>
+      <Entry></Entry>
+    </StackLayout>
+  </ScrollView>
+</ContentPage>
