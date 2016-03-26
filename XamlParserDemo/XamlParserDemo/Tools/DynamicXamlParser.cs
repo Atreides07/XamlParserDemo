@@ -10,10 +10,12 @@ namespace XamlParserDemo
 {
     public class DynamicXamlBindXmlParser
     {
+        private readonly Action<string> alertAction;
         private readonly XDocument xdoc;
 
-        public DynamicXamlBindXmlParser(string xml)
+        public DynamicXamlBindXmlParser(string xml, Action<string> alertAction)
         {
+            this.alertAction = alertAction;
             xdoc=XDocument.Parse(xml);
             Init();
         }
@@ -45,8 +47,16 @@ namespace XamlParserDemo
             ParseAttributes(result, rootElement.Attributes());
             foreach (var xNode in rootElement.Elements())
             {
-                var childElement = ParseChield(xNode);
-                AddToElement(result, childElement);
+                try
+                {
+                    var childElement = ParseChield(xNode);
+                    AddToElement(result, childElement);
+                }
+                catch (Exception exp)
+                {
+                    alertAction?.Invoke(exp.Message);
+                }
+                
             }
             return result;
         }

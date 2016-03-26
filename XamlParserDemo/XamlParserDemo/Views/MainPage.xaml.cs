@@ -35,7 +35,14 @@ namespace XamlParserDemo.Views
 
                 XamlEditer.Text = Xaml;
                 XmlEditer.Text = Xml;
+
+                
             }
+
+            MessagingCenter.Subscribe<XmlMessage>(this, "test", (xmlMessage) =>
+            {
+                XmlEditer.Text = xmlMessage.Xml;
+            });
         }
 
         protected override void OnAppearing()
