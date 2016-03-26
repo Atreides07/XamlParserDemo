@@ -147,7 +147,19 @@ namespace XamlParserDemo
                 var xElement = GetBindElement(value);
                 if (result is Slider)
                 {
-                    (result as Slider).Value = double.Parse(xElement.Value);
+                    var d = double.Parse(xElement.Value);
+                    
+                    if ((result as Slider).Minimum > d)
+                    {
+                        (result as Slider).Minimum = d;
+                    }
+
+                    if ((result as Slider).Maximum < d)
+                    {
+                        (result as Slider).Maximum = d;
+                    }
+                    (result as Slider).Value = d;
+
                     (result as Slider).ValueChanged+= (s, e) =>
                     {
                         xElement.SetValue((result as Slider).Value);
