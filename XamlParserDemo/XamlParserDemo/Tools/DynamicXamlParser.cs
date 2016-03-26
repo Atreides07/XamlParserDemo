@@ -16,7 +16,7 @@ namespace XamlParserDemo
         public DynamicXamlBindXmlParser(string xml, Action<string> alertAction)
         {
             this.alertAction = alertAction;
-            xdoc=XDocument.Parse(xml);
+            xdoc = XDocument.Parse(xml);
             Init();
         }
 
@@ -36,9 +36,17 @@ namespace XamlParserDemo
 
         public View Parse(string xaml)
         {
-            var xdoc = XDocument.Parse(xaml);
-            var rootElement = xdoc.Root;
-            return ParseChield(rootElement);
+            try
+            {
+                var xdoc = XDocument.Parse(xaml);
+                var rootElement = xdoc.Root;
+                return ParseChield(rootElement);
+            }
+            catch (Exception exp)
+            {
+                alertAction?.Invoke(exp.Message);
+            }
+            return null;
         }
 
         private View ParseChield(XElement rootElement)
@@ -47,16 +55,11 @@ namespace XamlParserDemo
             ParseAttributes(result, rootElement.Attributes());
             foreach (var xNode in rootElement.Elements())
             {
-                try
-                {
-                    var childElement = ParseChield(xNode);
-                    AddToElement(result, childElement);
-                }
-                catch (Exception exp)
-                {
-                    alertAction?.Invoke(exp.Message);
-                }
-                
+
+                var childElement = ParseChield(xNode);
+                AddToElement(result, childElement);
+
+
             }
             return result;
         }
@@ -73,7 +76,7 @@ namespace XamlParserDemo
                 {
                     result.WidthRequest = double.Parse(xAttribute.Value);
                 }
-                
+
                 if (xAttribute.Name.LocalName == "HorizontalOptions")
                 {
                     result.HorizontalOptions = ParseLayoutOption(xAttribute.Value);
@@ -140,7 +143,7 @@ namespace XamlParserDemo
         {
             if (!value.StartsWith(bindingPrefix))
             {
-                if (result is Slider) (result as Slider).Value= double.Parse(value);
+                if (result is Slider) (result as Slider).Value = double.Parse(value);
             }
             else
             {
@@ -148,7 +151,7 @@ namespace XamlParserDemo
                 if (result is Slider)
                 {
                     var d = double.Parse(xElement.Value);
-                    
+
                     if ((result as Slider).Minimum > d)
                     {
                         (result as Slider).Minimum = d;
@@ -160,10 +163,10 @@ namespace XamlParserDemo
                     }
                     (result as Slider).Value = d;
 
-                    (result as Slider).ValueChanged+= (s, e) =>
-                    {
-                        xElement.SetValue((result as Slider).Value);
-                    };
+                    (result as Slider).ValueChanged += (s, e) =>
+                     {
+                         xElement.SetValue((result as Slider).Value);
+                     };
                 }
             }
         }
@@ -222,10 +225,10 @@ namespace XamlParserDemo
             else
             {
                 var xElement = GetBindElement(value);
-                if (result is Label) (result as Label).Text =   xElement.Value;
+                if (result is Label) (result as Label).Text = xElement.Value;
                 if (result is Entry)
                 {
-                    (result as Entry).Text =   xElement.Value;
+                    (result as Entry).Text = xElement.Value;
                     (result as Entry).TextChanged += (s, e) =>
                     {
                         xElement.SetValue((result as Entry).Text);
@@ -242,7 +245,7 @@ namespace XamlParserDemo
             var startIndex = value.IndexOf(bindingPrefix) + bindingPrefix.Length;
             var endIndex = value.IndexOf("}");
 
-            return value.Substring(startIndex,endIndex-startIndex).Trim();
+            return value.Substring(startIndex, endIndex - startIndex).Trim();
         }
 
         private XElement GetBindElement(string value)
@@ -350,7 +353,7 @@ namespace XamlParserDemo
     //            }
 
 
-               
+
 
 
     //            if (xAttribute.Name.LocalName == "Source")
@@ -405,7 +408,7 @@ namespace XamlParserDemo
     //        if (result is Entry) (result as Entry).Text = value;
     //        if (result is Editor) (result as Editor).Text = value;
     //        if (result is Button) (result as Button).Text = value;
-            
+
     //    }
 
     //    private void AddToElement(View parent, View childElement)
@@ -423,7 +426,7 @@ namespace XamlParserDemo
     //        {
     //            (parent as ScrollView).Content = childElement;
     //        }
-            
+
     //    }
     //}
 }

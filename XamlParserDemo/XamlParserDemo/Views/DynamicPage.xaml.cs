@@ -23,8 +23,11 @@ namespace XamlParserDemo.Views
                 });
 
             var rootView = xamlParser.Parse(MainPage.Xaml);
-            Content = rootView;
-            
+            if (rootView != null)
+            {
+                Content = rootView;
+            }
+
         }
 
         private readonly DynamicXamlBindXmlParser xamlParser;
