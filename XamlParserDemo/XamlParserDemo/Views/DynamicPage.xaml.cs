@@ -16,18 +16,24 @@ namespace XamlParserDemo.Views
         {
             InitializeComponent();
 
-            
-            var rootView = Parse(MainPage.Xaml);
+            xamlParser=new DynamicXamlBindXmlParser(MainPage.Xml);
+
+            var rootView = xamlParser.Parse(MainPage.Xaml);
             Content = rootView;
         }
 
-        static DynamicXamlParser xamlParser=new DynamicXamlParser();
+        private readonly DynamicXamlBindXmlParser xamlParser;
 
-        private View Parse(string xaml)
+        protected override bool OnBackButtonPressed()
         {
-            return xamlParser.Parse(xaml);
+            MainPage.Xml = xamlParser.GetXml();
+            return base.OnBackButtonPressed();
         }
-        
-        
+
+        protected override void OnDisappearing()
+        {
+            MainPage.Xml = xamlParser.GetXml();
+            base.OnDisappearing();
+        }
     }
 }

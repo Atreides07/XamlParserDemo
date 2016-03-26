@@ -13,22 +13,43 @@ namespace XamlParserDemo.Views
         public MainPage()
         {
             InitializeComponent();
-            XamlEditer.Text = @"
+            if (Xaml == null)
+            {
+                Xaml = @"
   <ScrollView>
     <StackLayout>
-      <Image Source=""http://7oom.ru/wp-content/uploads/foto-priroda-9.jpg"" WidthRequest=""300"" HeightRequest=""200"" Aspect=""AspectFill"" HorizontalOptions=""Center"" />
-      <Label Text=""XAML:""></Label>
-      <Editor HeightRequest=""300""></Editor>
-      <Label Text=""xml""></Label>
-      <Editor  HeightRequest=""300""></Editor>
-      <Button Text=""Показать"" HorizontalOptions=""Center"" Clicked=""Button_OnClicked""></Button>
-      <Entry></Entry>
+      <Image Source=""{Binding /Student/AvatarUrl}"" WidthRequest=""300"" HeightRequest=""200"" Aspect=""AspectFill"" HorizontalOptions=""Center"" />
+      <Entry Text=""{Binding /Student/Id}""></Entry>
+      <Entry Text=""{Binding /Student/FirstName}""></Entry>
+      <Slider Value=""{Binding /Student/Weight}"" Maximum =""200""></Slider>
     </StackLayout>
   </ScrollView>";
+
+                Xml = @"
+<Student>
+    <Id>2</Id>
+    <FirstName>Иван</FirstName>
+    <Weight>50</Weight>
+    <AvatarUrl>http://7oom.ru/wp-content/uploads/foto-priroda-9.jpg</AvatarUrl>
+</Student>";
+
+                XamlEditer.Text = Xaml;
+                XmlEditer.Text = Xml;
+            }
         }
 
-        public static string Xaml { get; private set; }
-        public static string Xml { get; private set; }
+        protected override void OnAppearing()
+        {
+            XamlEditer.Text = Xaml;
+            XmlEditer.Text = Xml;
+            base.OnAppearing();
+            
+        }
+
+        
+
+        public static string Xaml { get;  set; }
+        public static string Xml { get;  set; }
         private void Button_OnClicked(object sender, EventArgs e)
         {
             Xaml = XamlEditer.Text;
